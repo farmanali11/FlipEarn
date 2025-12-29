@@ -94,9 +94,9 @@ const MyOrders = () => {
 
   if (loading) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
+      <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
         <div className="text-center">
-          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-100 to-indigo-100 shadow-lg">
+          <div className="mx-auto flex h-16 w-16 items-center justify-center rounded-2xl bg-linear-to-br from-blue-100 to-indigo-100 shadow-lg">
             <Loader2Icon className="h-8 w-8 animate-spin text-blue-600" />
           </div>
           <p className="mt-4 text-lg font-semibold text-slate-700">
@@ -109,19 +109,19 @@ const MyOrders = () => {
 
   if (!orders.length) {
     return (
-      <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
+      <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
         {/* Animated Background */}
         <div className="fixed inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
+          <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
           <div
-            className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
+            className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-linear-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
             style={{ animationDelay: "1s" }}
           />
         </div>
 
         <div className="relative flex min-h-screen items-center justify-center px-4">
           <div className="w-full max-w-md text-center">
-            <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-gradient-to-br from-blue-100 via-indigo-100 to-purple-100 shadow-xl shadow-blue-200/50">
+            <div className="mx-auto mb-6 flex h-24 w-24 items-center justify-center rounded-3xl bg-linear-to-br from-blue-100 via-indigo-100 to-purple-100 shadow-xl shadow-blue-200/50">
               <ShoppingBag className="h-12 w-12 text-blue-600" />
             </div>
             <h3 className="text-2xl font-bold text-slate-900">
@@ -137,12 +137,12 @@ const MyOrders = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
         <div
-          className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
+          className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-linear-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
         />
       </div>
@@ -150,7 +150,7 @@ const MyOrders = () => {
       <div className="relative mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8 flex items-center gap-4">
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/30">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/30">
             <ShoppingBag className="h-7 w-7 text-white" />
           </div>
           <div>
@@ -187,7 +187,7 @@ const MyOrders = () => {
                 className="group overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-xl shadow-slate-200/50 backdrop-blur-xl transition-all duration-300 hover:border-blue-200/80 hover:shadow-2xl hover:shadow-blue-200/30"
               >
                 {/* Order Header */}
-                <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-6 py-5">
+                <div className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-6 py-5">
                   <div className="flex items-center justify-between gap-4">
                     <div className="flex flex-1 items-center gap-4">
                       {/* Platform Icon */}
@@ -288,7 +288,7 @@ const MyOrders = () => {
                   <div className="space-y-6 p-6">
                     {/* Stats Grid */}
                     <div className="grid gap-4 sm:grid-cols-4">
-                      <div className="rounded-xl bg-gradient-to-br from-blue-50 to-blue-100/50 p-4">
+                      <div className="rounded-xl bg-linear-to-br from-blue-50 to-blue-100/50 p-4">
                         <div className="flex items-center gap-2 text-blue-700">
                           <Users className="h-4 w-4" />
                           <span className="text-xs font-medium">Followers</span>
@@ -298,7 +298,7 @@ const MyOrders = () => {
                         </p>
                       </div>
 
-                      <div className="rounded-xl bg-gradient-to-br from-green-50 to-green-100/50 p-4">
+                      <div className="rounded-xl bg-linear-to-br from-green-50 to-green-100/50 p-4">
                         <div className="flex items-center gap-2 text-green-700">
                           <TrendingUp className="h-4 w-4" />
                           <span className="text-xs font-medium">
@@ -310,7 +310,7 @@ const MyOrders = () => {
                         </p>
                       </div>
 
-                      <div className="rounded-xl bg-gradient-to-br from-purple-50 to-purple-100/50 p-4">
+                      <div className="rounded-xl bg-linear-to-br from-purple-50 to-purple-100/50 p-4">
                         <div className="flex items-center gap-2 text-purple-700">
                           <Shield className="h-4 w-4" />
                           <span className="text-xs font-medium">Verified</span>
@@ -320,7 +320,7 @@ const MyOrders = () => {
                         </p>
                       </div>
 
-                      <div className="rounded-xl bg-gradient-to-br from-amber-50 to-amber-100/50 p-4">
+                      <div className="rounded-xl bg-linear-to-br from-amber-50 to-amber-100/50 p-4">
                         <div className="flex items-center gap-2 text-amber-700">
                           <Coins className="h-4 w-4" />
                           <span className="text-xs font-medium">Monetized</span>
