@@ -231,7 +231,7 @@ const ManageListing = () => {
 
   if (loadListing) {
     return (
-      <div className="flex min-h-screen items-center justify-center bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
+      <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
         <div className="text-center">
           <Loader2 className="mx-auto h-12 w-12 animate-spin text-blue-600" />
           <p className="mt-4 text-lg font-semibold text-slate-700">
@@ -243,12 +243,12 @@ const ManageListing = () => {
   }
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
+    <div className="min-h-screen bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">
       {/* Animated Background */}
       <div className="fixed inset-0 overflow-hidden pointer-events-none">
-        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-gradient-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
+        <div className="absolute -top-40 -right-40 h-80 w-80 rounded-full bg-linear-to-br from-blue-400/10 to-purple-400/10 blur-3xl animate-pulse" />
         <div
-          className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-gradient-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
+          className="absolute -bottom-40 -left-40 h-80 w-80 rounded-full bg-linear-to-br from-indigo-400/10 to-pink-400/10 blur-3xl animate-pulse"
           style={{ animationDelay: "1s" }}
         />
       </div>
@@ -275,7 +275,7 @@ const ManageListing = () => {
             </div>
           </div>
 
-          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-gradient-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/30">
+          <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-linear-to-br from-blue-600 to-indigo-600 shadow-lg shadow-blue-600/30">
             <Sparkles className="h-7 w-7 text-white" />
           </div>
         </div>
@@ -284,7 +284,7 @@ const ManageListing = () => {
         <form onSubmit={handleSubmit} className="space-y-6">
           {/* Basic Information Card */}
           <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-2xl shadow-slate-200/50 backdrop-blur-xl">
-            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
+            <div className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
               <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900">
                 <Info className="h-6 w-6 text-blue-600" />
                 Basic Information
@@ -442,7 +442,7 @@ const ManageListing = () => {
 
           {/* Statistics Card */}
           <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-2xl shadow-slate-200/50 backdrop-blur-xl">
-            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
+            <div className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
               <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900">
                 <BarChart3 className="h-6 w-6 text-indigo-600" />
                 Account Statistics
@@ -639,7 +639,7 @@ const ManageListing = () => {
 
           {/* Description Card */}
           <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-2xl shadow-slate-200/50 backdrop-blur-xl">
-            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
+            <div className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
               <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900">
                 <Info className="h-6 w-6 text-blue-600" />
                 Description
@@ -679,7 +679,7 @@ const ManageListing = () => {
 
           {/* Images Card */}
           <div className="overflow-hidden rounded-3xl border border-slate-200/80 bg-white/80 shadow-2xl shadow-slate-200/50 backdrop-blur-xl">
-            <div className="border-b border-slate-100 bg-gradient-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
+            <div className="border-b border-slate-100 bg-linear-to-r from-slate-50 via-white to-slate-50 px-8 py-6">
               <h2 className="flex items-center gap-2 text-xl font-bold text-slate-900">
                 <ImageIcon className="h-6 w-6 text-purple-600" />
                 Images
@@ -766,7 +766,7 @@ const ManageListing = () => {
                       >
                         <X className="h-4 w-4" />
                       </button>
-                      <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
+                      <div className="absolute inset-0 bg-linear-to-t from-black/50 to-transparent opacity-0 transition-opacity group-hover:opacity-100" />
                     </div>
                   ))}
                 </div>
@@ -786,9 +786,9 @@ const ManageListing = () => {
             <button
               type="submit"
               disabled={isSubmitting}
-              className="group relative flex-1 overflow-hidden rounded-2xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-blue-600/30 transition-all hover:shadow-2xl hover:shadow-blue-600/40 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+              className="group relative flex-1 overflow-hidden rounded-2xl bg-linear-to-r from-blue-600 via-indigo-600 to-purple-600 px-8 py-4 text-base font-bold text-white shadow-xl shadow-blue-600/30 transition-all hover:shadow-2xl hover:shadow-blue-600/40 hover:-translate-y-1 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:translate-y-0"
             >
-              <span className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 opacity-0 transition-opacity group-hover:opacity-100" />
+              <span className="absolute inset-0 bg-linear-to-r from-blue-500 to-purple-500 opacity-0 transition-opacity group-hover:opacity-100" />
               <span className="relative flex items-center justify-center gap-2">
                 {isSubmitting ? (
                   <>
@@ -808,7 +808,7 @@ const ManageListing = () => {
           {/* Success Info Box */}
           <div className="rounded-2xl border border-green-200 bg-green-50 p-4">
             <div className="flex items-start gap-3">
-              <CheckCircle2 className="h-5 w-5 flex-shrink-0 text-green-600 mt-0.5" />
+              <CheckCircle2 className="h-5 w-5 shrink-0 text-green-600 mt-0.5" />
               <div>
                 <p className="text-sm font-semibold text-green-900">
                   Ready to publish?
