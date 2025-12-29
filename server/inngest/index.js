@@ -1,5 +1,5 @@
 import { Inngest } from "inngest";
-import prisma from "../configs/prisma";
+import prisma from "../configs/prisma.js";
 
 // Create a client to send and receive events
 export const inngest = new Inngest({ id: "profile-marketplace" });
@@ -41,7 +41,6 @@ const syncUserCreation = inngest.createFunction(
 
 // Inggest function to delete user from database
 
-
 const syncUserDeletion = inngest.createFunction(
   { id: "delete-user-with-clerk" },
   { event: "clerk/user.deleted" },
@@ -49,31 +48,33 @@ const syncUserDeletion = inngest.createFunction(
     const { data } = event;
 
     const listings = await prisma.listing.findMany({
-      where: {ownerId: data.id },
+      where: { ownerId: data.id },
     });
 
     const chats = await prisma.chat.findMany({
-      where: {OR:[ {ownerId: data.id},{chatUserId:data.id} ]},
+      where: { OR: [{ ownerId: data.id }, { chatUserId: data.id }] },
     });
 
     const transactions = await prisma.transaction.findMany({
-      where: {userId: data.id },
+      where: { userId: data.id },
     });
 
-
-    if(listings.length === 0 && chats.length ===0 && transactions.length ===0){
+    if (
+      listings.length === 0 &&
+      chats.length === 0 &&
+      transactions.length === 0
+    ) {
       await prisma.user.delete({
         where: { id: data.id },
       });
-    } else{
+    } else {
       await prisma.user.updateMany({
         where: { id: data.id },
-        data: {status:"inactive"},
-      })
+        data: { status: "inactive" },
+      });
     }
   }
 );
-
 
 // Inngest function to update user data in the database
 const syncUserUpdation = inngest.createFunction(
@@ -92,10 +93,6 @@ const syncUserUpdation = inngest.createFunction(
     });
   }
 );
-
-
-
-
 
 // Create an empty array where we'll export future Inngest functions
 export const functions = [syncUserCreation, syncUserDeletion, syncUserUpdation];
