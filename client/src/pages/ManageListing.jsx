@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, useParams } from "react-router-dom";
 import toast from "react-hot-toast";
 import {
@@ -25,11 +25,17 @@ import {
   Target,
 } from "lucide-react";
 import { platformIcons } from "../assets/assets";
+import { useAuth } from "@clerk/clerk-react";
+import api from "../configs/axios";
+import { getAllPublicListings, getAllUserListing } from "../app/features/listingSlice";
 
 const ManageListing = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const { userListings = [] } = useSelector((state) => state.listings || {});
+
+  const {getToken} = useAuth();
+  const dispatch = useDispatch();
 
   const [loadListing, setLoadListing] = useState(false);
   const [isEditing, setIsEditing] = useState(false);
@@ -182,53 +188,100 @@ const ManageListing = () => {
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    if (!validateForm()) {
-      toast.error("Please fix all errors before submitting");
-      return;
-    }
+  // Validate form FIRST before doing anything
+  if (!validateForm()) {
+    toast.error("Please fix all errors before submitting");
+    return;
+  }
 
-    setIsSubmitting(true);
+  toast.loading("Submitting...");
+  setIsSubmitting(true);
 
-    try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+  try {
+    const dataCopy = structuredClone(formData);
 
-      console.log("Form submitted:", formData);
+    if (isEditing) {
+      // Keep only string URLs (existing images)
+      dataCopy.images = formData.images.filter(
+        (image) => typeof image === "string"
+      );
 
-      if (isEditing) {
-        toast.success("Listing updated successfully!");
-      } else {
-        toast.success("Listing created successfully!");
-      }
+      const formDataInstance = new FormData();
+      formDataInstance.append("accountDetails", JSON.stringify(dataCopy));
 
+      // Append new image files
+      formData.images
+        .filter((image) => typeof image !== "string")
+        .forEach((image) => {
+          formDataInstance.append("images", image);
+        });
+
+      const token = await getToken();
+
+      const { data } = await api.put("/api/listing", formDataInstance, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      toast.dismiss();
+      toast.success(data.message);
+      dispatch(getAllUserListing({ getToken }));
+      dispatch(getAllPublicListings());
       navigate("/my-listings");
-    } catch (error) {
-      toast.error("Failed to save listing. Please try again.");
-      console.error(error);
-    } finally {
-      setIsSubmitting(false);
-    }
-  };
-
-  useEffect(() => {
-    if (!id) return;
-
-    setIsEditing(true);
-    setLoadListing(true);
-
-    const listing = userListings?.find((listing) => listing.id === id);
-    if (listing) {
-      setFormData(listing);
-      setLoadListing(false);
     } else {
-      toast.error("Listing not found");
+      // Creating new listing
+      delete dataCopy.images;
+
+      const formDataInstance = new FormData();
+      formDataInstance.append("accountDetails", JSON.stringify(dataCopy));
+
+      // Append all images
+      formData.images.forEach((image) => {
+        formDataInstance.append("images", image);
+      });
+
+      const token = await getToken();
+
+      const { data } = await api.post("/api/listing", formDataInstance, {
+        headers: { Authorization: `Bearer ${token}` },
+      });
+
+      toast.dismiss();
+      toast.success(data.message);
+      dispatch(getAllUserListing({ getToken }));
+      dispatch(getAllPublicListings());
       navigate("/my-listings");
     }
-  }, [id, userListings, navigate]);
+  } catch (error) {
+    toast.dismiss();
+    const errorMessage =
+      error.response?.data?.message ||
+      error.message ||
+      "Failed to save listing";
+    toast.error(errorMessage);
+    console.error("Submit error:", error);
+  } finally {
+    setIsSubmitting(false);
+  }
+};
 
+useEffect(() => {
+  if (!id) return;
+
+  setIsEditing(true);
+  setLoadListing(true);
+
+  const listing = userListings?.find((listing) => listing.id === id);
+  if (listing) {
+    setFormData(listing);
+    setLoadListing(false);
+  } else {
+    toast.error("Listing not found");
+    navigate("/my-listings");
+  }
+}, [id, userListings, navigate]);
   if (loadListing) {
     return (
       <div className="flex min-h-screen items-center justify-center bg-linear-to-br from-slate-50 via-blue-50/40 to-indigo-50/30">

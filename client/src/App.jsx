@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Route, Routes, useLocation } from "react-router-dom";
 import Marketplace from "./pages/Marketplace";
 import MyListings from "./pages/MyListings";
@@ -15,13 +15,32 @@ import { Toaster } from "react-hot-toast";
 import Layout from "./pages/admin/Layout";
 import Dashboard from "./pages/admin/Dashboard";
 import AllListings from "./pages/admin/allListings";
-import CredentialChange from "./pages/admin/CredentialChange"; // Fixed typo
+import CredentialChange from "./pages/admin/CredentialChange";
 import CredentialVerify from "./pages/admin/CredentialVerify";
 import Transactions from "./pages/admin/Transactions";
 import Withdrawal from "./pages/admin/Withdrawal";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { useDispatch } from "react-redux";
+import {
+  getAllPublicListings,
+  getAllUserListing,
+} from "./app/features/listingSlice";
 
-export const App = () => {
+const App = () => {
   const { pathname } = useLocation();
+  const { user, isLoaded } = useUser();
+  const { getToken } = useAuth();
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getAllPublicListings());
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (isLoaded && user) {
+      dispatch(getAllUserListing({ getToken }));
+    }
+  }, [isLoaded, user, dispatch, getToken]);
 
   return (
     <div>
@@ -44,11 +63,7 @@ export const App = () => {
         <Route path="/admin" element={<Layout />}>
           <Route index element={<Dashboard />} />
           <Route path="verify-credentials" element={<CredentialVerify />} />
-          <Route
-            path="change-credentials"
-            element={<CredentialChange />}
-          />{" "}
-          {/* Fixed */}
+          <Route path="change-credentials" element={<CredentialChange />} />
           <Route path="list-listings" element={<AllListings />} />
           <Route path="transactions" element={<Transactions />} />
           <Route path="withdrawal" element={<Withdrawal />} />
