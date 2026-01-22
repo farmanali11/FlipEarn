@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import {
   Plus,
@@ -33,6 +33,10 @@ import StatCard from "../components/StatCard";
 import { platformIcons } from "../assets/assets";
 import WithdrawModal from "../components/WithdrawModel";
 import CredentialSubmission from "../components/CredentialSubmission";
+import {useAuth} from "@clerk/clerk-react"
+import toast from "react-hot-toast";
+import api from "../configs/axios"
+
 
 const MyListings = () => {
   const { userListings = [], balance = {} } = useSelector(
@@ -41,6 +45,12 @@ const MyListings = () => {
 
   const currency = import.meta.env.VITE_CURRENCY || "$";
   const navigate = useNavigate();
+
+  const {getToken} = useAuth();
+  const dispatch = useDispatch();
+  
+
+
 
   // Modal states
   const [showCredentialSubmission, setShowCredentialSubmission] =
@@ -59,9 +69,18 @@ const MyListings = () => {
   };
 
   const toggleStatus = async (listingId) => {
-    console.log("Toggle status:", listingId);
-    // Implementation here
-    // API call to toggle listing status
+    try {
+      toast.loading("Updating loading status...")
+      const token = await getToken();
+      const {data} = await api.put(`/api/listing/${listingId}/status`,{},
+        {headers:{Authorization:`Bearer ${token}})
+        dispatch(getAllPublicListings({getToken}))
+      
+    } catch (error) {
+      toast.dismissAll()
+      toast.error(error?.response?.data?.message || error.message)
+      
+    }
   };
 
   const deleteListing = async (listingId) => {
@@ -449,7 +468,7 @@ const MyListings = () => {
                           {!listing.isCredentialSubmitted && (
                             <button
                               onClick={() => handleAddCredentials(listing)}
-                              className="w-full rounded-lg bg-gradient-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all hover:shadow-xl hover:shadow-blue-600/40 hover:-translate-y-0.5"
+                              className="w-full rounded-lg bg-linear-to-r from-blue-600 to-indigo-600 px-4 py-2.5 text-xs font-bold text-white shadow-lg shadow-blue-600/30 transition-all hover:shadow-xl hover:shadow-blue-600/40 hover:-translate-y-0.5"
                             >
                               Add Credentials Now
                             </button>
@@ -519,7 +538,7 @@ const MyListings = () => {
                       </div>
 
                       {/* Hover Gradient Effect */}
-                      <div className="absolute inset-0 -z-10 bg-gradient-to-br from-blue-500/0 via-indigo-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-5" />
+                      <div className="absolute inset-0 -z-10 bg-linear-to-br from-blue-500/0 via-indigo-500/0 to-purple-500/0 opacity-0 transition-opacity duration-500 group-hover:opacity-5" />
                     </div>
                   );
                 })}
@@ -532,7 +551,7 @@ const MyListings = () => {
             <div className="px-8 py-8">
               <div className="flex flex-col items-center justify-between gap-4 sm:flex-row">
                 <div className="flex items-center gap-3">
-                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-indigo-600 to-purple-600 shadow-lg">
+                  <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-linear-to-br from-indigo-600 to-purple-600 shadow-lg">
                     <Award className="h-5 w-5 text-white" />
                   </div>
                   <div>

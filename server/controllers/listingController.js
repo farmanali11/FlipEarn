@@ -35,30 +35,68 @@ export const addListing = async (req, res) => {
     accountDetails.niche = accountDetails.niche?.toLowerCase() || "";
 
     // Add safety check for username
+    // Auto-generate username from title if not provided
+    if (!accountDetails.username || accountDetails.username.trim() === "") {
+      accountDetails.username = accountDetails.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "")
+        .substring(0, 30);
+    }
+
+    // Remove @ symbol if present
     if (accountDetails.username && accountDetails.username.startsWith("@")) {
       accountDetails.username = accountDetails.username.slice(1);
     }
 
-   const uploadImages = req.files.map(async (file) => {
-     const response = await imagekit.upload({
-       file: fs.readFileSync(file.path),
-       fileName: `${Date.now()}-${file.originalname}`,
-       folder: "/flip-earn",
-     });
+    console.log(`Starting upload of ${req.files.length} files...`);
 
-     // Clean up uploaded file
-     fs.unlinkSync(file.path);
+    const uploadImages = req.files.map((file) => {
+      return new Promise((resolve, reject) => {
+        console.log(
+          `Uploading: ${file.originalname}, size: ${file.size} bytes`
+        );
 
-     return response.url;
-   });
+        const fileContent = fs.readFileSync(file.path, "base64");
+
+        const timeout = setTimeout(() => {
+          reject(new Error(`Upload timeout for file: ${file.originalname}`));
+        }, 30000); // 30 second timeout
+
+        imagekit.upload(
+          {
+            file: fileContent,
+            fileName: `${Date.now()}-${file.originalname}`,
+            folder: "/flip-earn",
+          },
+          (error, result) => {
+            clearTimeout(timeout);
+
+            if (error) {
+              console.error(`Upload failed for ${file.originalname}:`, error);
+              reject(error);
+            } else {
+              console.log(
+                `Upload success: ${file.originalname} -> ${result.url}`
+              );
+              fs.promises.unlink(file.path).catch(console.error);
+              resolve(result.url);
+            }
+          }
+        );
+      });
+    });
 
     // Wait for all uploads to complete
     const images = await Promise.all(uploadImages);
+    console.log(`All ${images.length} images uploaded successfully`);
 
     const listing = await prisma.listing.create({
       data: {
         ownerId: userId,
         images,
+        status: "active",
         ...accountDetails,
       },
     });
@@ -162,6 +200,17 @@ export const updateListing = async (req, res) => {
     accountDetails.niche = accountDetails.niche?.toLowerCase() || "";
 
     // Add safety check for username
+    // Auto-generate username from title if not provided
+    if (!accountDetails.username || accountDetails.username.trim() === "") {
+      accountDetails.username = accountDetails.title
+        .toLowerCase()
+        .replace(/[^a-z0-9]/g, "_")
+        .replace(/_+/g, "_")
+        .replace(/^_|_$/g, "")
+        .substring(0, 30);
+    }
+
+    // Remove @ symbol if present
     if (accountDetails.username && accountDetails.username.startsWith("@")) {
       accountDetails.username = accountDetails.username.slice(1);
     }
@@ -188,20 +237,46 @@ export const updateListing = async (req, res) => {
 
     let newImages = [];
     if (req.files && req.files.length > 0) {
-      const uploadImages = req.files.map(async (file) => {
-        const response = await imagekit.upload({
-          file: fs.readFileSync(file.path),
-          fileName: `${Date.now()}-${file.originalname}`,
-          folder: "flip-earn",
+      console.log(`Starting upload of ${req.files.length} files for update...`);
+
+      const uploadImages = req.files.map((file) => {
+        return new Promise((resolve, reject) => {
+          console.log(
+            `Uploading: ${file.originalname}, size: ${file.size} bytes`
+          );
+
+          const fileContent = fs.readFileSync(file.path, "base64");
+
+          const timeout = setTimeout(() => {
+            reject(new Error(`Upload timeout for file: ${file.originalname}`));
+          }, 30000);
+
+          imagekit.upload(
+            {
+              file: fileContent,
+              fileName: `${Date.now()}-${file.originalname}`,
+              folder: "/flip-earn",
+            },
+            (error, result) => {
+              clearTimeout(timeout);
+
+              if (error) {
+                console.error(`Upload failed for ${file.originalname}:`, error);
+                reject(error);
+              } else {
+                console.log(
+                  `Upload success: ${file.originalname} -> ${result.url}`
+                );
+                fs.promises.unlink(file.path).catch(console.error);
+                resolve(result.url);
+              }
+            }
+          );
         });
-
-        // Clean up uploaded file
-        fs.unlinkSync(file.path);
-
-        return response.url;
       });
 
       newImages = await Promise.all(uploadImages);
+      console.log(`All ${newImages.length} images uploaded successfully`);
     }
 
     const updatedListing = await prisma.listing.update({
