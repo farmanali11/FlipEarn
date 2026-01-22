@@ -14,7 +14,7 @@ import ChatBox from "./components/ChatBox";
 import { Toaster } from "react-hot-toast";
 import Layout from "./pages/admin/Layout";
 import Dashboard from "./pages/admin/Dashboard";
-import AllListings from "./pages/admin/allListings";
+import AllListings from "./pages/admin/AllListings";
 import CredentialChange from "./pages/admin/CredentialChange";
 import CredentialVerify from "./pages/admin/CredentialVerify";
 import Transactions from "./pages/admin/Transactions";
